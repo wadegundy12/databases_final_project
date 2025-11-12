@@ -4,10 +4,9 @@ import pygame
 from constants import *
 from board import *
 from ui import *
+from menu import show_menu
 
-def main():
-    pygame.init()
-    screen = pygame.display.set_mode(size)
+def run_game(screen):
     board = create_board()
     game_over = False
     turn = 0
@@ -25,12 +24,11 @@ def main():
                 pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARESIZE))
                 posx = event.pos[0]
                 color = RED if turn == 0 else YELLOW
-                pygame.draw.circle(screen, color, (posx, int(SQUARESIZE/2)), RADIUS)
+                pygame.draw.circle(screen, color, (posx, int(SQUARESIZE / 2)), RADIUS)
                 pygame.display.update()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARESIZE))
-
                 posx = event.pos[0]
                 col = int(posx / SQUARESIZE)
 
@@ -43,11 +41,17 @@ def main():
                         game_over = True
 
                     draw_board(screen, board)
-
                     turn = (turn + 1) % 2
 
         if game_over:
             pygame.time.wait(3000)
+
+def main():
+    choice = show_menu()
+    if choice == "play":
+        pygame.init()
+        screen = pygame.display.set_mode(size)
+        run_game(screen)
 
 if __name__ == "__main__":
     main()
