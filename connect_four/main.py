@@ -5,6 +5,8 @@ from constants import *
 from board import *
 from ui import *
 from menu import show_menu
+from login import show_login
+
 
 def run_game(screen):
     board = create_board()
@@ -47,10 +49,14 @@ def run_game(screen):
             pygame.time.wait(3000)
 
 def main():
+    pygame.init()
+    screen = pygame.display.set_mode(size)
+
+    if not show_login(screen):
+        return
+
     choice = show_menu()
     if choice == "play":
-        pygame.init()
-        screen = pygame.display.set_mode(size)
         run_game(screen)
 
 if __name__ == "__main__":
