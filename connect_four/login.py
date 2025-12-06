@@ -1,7 +1,8 @@
 # login.py
 import pygame
 import sys
-from constants import BLACK, BLUE, RED, YELLOW, FONT, size
+from constants import BLACK, FONT
+from login_format import NEON_GREEN, ERROR_RED, DARK_GRAY, FONT_ERROR_MSG, AMBER, DARK_GREEN
 from db import init_db, validate_login, user_exists, create_new_user
 
 
@@ -28,12 +29,19 @@ class InputBox:
                 self.text += event.unicode
 
     def draw(self, screen):
-        pygame.draw.rect(screen, YELLOW if self.active else RED, self.rect, 2)
-        display_text = (
-            "*" * len(self.text) if self.is_password else self.text
-        )
-        text_surface = FONT.render(display_text, True, BLACK)
-        screen.blit(text_surface, (self.rect.x + 5, self.rect.y + 5))
+        display = self.text if not self.is_password else "*" * len(self.text)
+        txt_surface = FONT.render(display, True, NEON_GREEN)
+        screen.blit(txt_surface, (self.rect.x + 10, self.rect.y + 10))
+
+        # blinking cursor
+        time = pygame.time.get_ticks()
+        if self.active and (time // 500) % 2 == 0:  
+            cursor_x = self.rect.x + 10 + txt_surface.get_width() + 5
+            cursor_y = self.rect.y + 10
+            cursor = FONT.render("_", True, NEON_GREEN)
+            screen.blit(cursor, (cursor_x, cursor_y))
+
+        pygame.draw.rect(screen, DARK_GREEN, self.rect, 2)
 
 
 # ----------------------
@@ -44,44 +52,44 @@ def show_login(screen):
 
     clock = pygame.time.Clock()
 
-    username_box = InputBox(200, 200, 300, 50)
-    password_box = InputBox(200, 300, 300, 50, is_password=True)
+    username_box = InputBox(200, 175, 300, 60)
+    password_box = InputBox(200, 300, 300, 60, is_password=True)
 
     login_button = pygame.Rect(250, 400, 200, 60)
-    create_button = pygame.Rect(250, 480, 200, 60)
+    join_button = pygame.Rect(250, 480, 200, 60)
 
     message = ""
 
     running = True
     while running:
-        screen.fill(BLUE)
+        screen.fill(BLACK)
 
-        title = FONT.render("Login", True, YELLOW)
-        screen.blit(title, (260, 120))
+        title = FONT.render("Player 1 - Login", True, AMBER)
+        screen.blit(title, (90, 50))
 
-        label_user = FONT.render("Username:", True, BLACK)
-        screen.blit(label_user, (200, 170))
+        label_user = FONT.render("Username:", True, NEON_GREEN)
+        screen.blit(label_user, (200, 115))
 
-        label_pass = FONT.render("Password:", True, BLACK)
-        screen.blit(label_pass, (200, 270))
+        label_pass = FONT.render("Password:", True, NEON_GREEN)
+        screen.blit(label_pass, (200, 245))
 
         username_box.draw(screen)
         password_box.draw(screen)
 
         # Buttons
-        pygame.draw.rect(screen, RED, login_button)
-        pygame.draw.rect(screen, RED, create_button)
+        pygame.draw.rect(screen, DARK_GRAY, login_button)
+        pygame.draw.rect(screen, DARK_GRAY, join_button)
 
-        login_label = FONT.render("Login", True, BLACK)
-        screen.blit(login_label, (login_button.centerx - 40, login_button.centery - 15))
+        login_label = FONT.render("Login", True, NEON_GREEN)
+        screen.blit(login_label, (login_button.centerx - 90, login_button.centery - 30))
 
-        create_label = FONT.render("Create Account", True, BLACK)
-        screen.blit(create_label, (create_button.centerx - 110, create_button.centery - 15))
+        join_label = FONT.render("Join", True, NEON_GREEN)
+        screen.blit(join_label, (join_button.centerx - 75, join_button.centery - 30))
 
         # Message text
         if message:
-            msg_surface = FONT.render(message, True, BLACK)
-            screen.blit(msg_surface, (200, 550))
+            msg_surface = FONT_ERROR_MSG.render(message, True, ERROR_RED)
+            screen.blit(msg_surface, (150, 550))
 
         pygame.display.update()
 
@@ -101,19 +109,19 @@ def show_login(screen):
                     if validate_login(username, password):
                         return True
                     else:
-                        message = "Invalid username or password"
+                        message = "Invalid Login"
 
-                elif create_button.collidepoint(event.pos):
+                elif join_button.collidepoint(event.pos):
                     username = username_box.text.strip()
                     password = password_box.text.strip()
 
                     if user_exists(username):
                         message = "Username already exists"
                     elif len(username) < 3 or len(password) < 3:
-                        message = "Username and password must be 3+ chars"
+                        message = "User & pass need 3+ chars"
                     else:
                         create_new_user(username, password)
-                        message = "Account created! Log in now."
+                        message = "Account created! Log in."
 
         clock.tick(30)
 
