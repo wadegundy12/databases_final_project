@@ -5,3 +5,4 @@
 | 11/12/2025| started connect 4 design   |    3      |
 | 11/13/2025| continued connect 4 design |    3      |
 | 11/20/2025| started login system       |    5      |
+| 12/06/2025| design/formating login     |    3      |
