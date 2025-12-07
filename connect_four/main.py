@@ -6,7 +6,7 @@ from board import *
 from ui import *
 from menu import show_menu
 from login import show_login
-
+from db import record_result
 
 def run_game(screen, player1, player2):
     board = create_board()
@@ -40,11 +40,21 @@ def run_game(screen, player1, player2):
                     drop_piece(board, row, col, piece)
 
                     if winning_move(board, piece):
+                        if piece == 1:
+                            winner = player1
+                            loser = player2
+                        else:
+                            winner = player2
+                            loser = player1
+
+                        record_result(winner, loser)
+
+
                         show_winner(screen, piece, player1, player2)
                         game_over = True
                     else:
                         turn = (turn + 1) % 2
-
+                        
                     draw_board(screen, board, player1, player2, turn)
 
         if game_over:
@@ -63,9 +73,30 @@ def main():
     if not player2:
         return
 
-    choice = show_menu()
-    if choice == "play":
-        run_game(screen, player1, player2)
+    running = True
+    while running:
+        choice = show_menu(screen, player1, player2)
+
+        if choice == "connect4":
+            run_game(screen, player1, player2)
+
+        elif choice == "tictactoe":
+            screen.fill(BLACK)
+            msg = FONT.render("Second game coming soon!", True, YELLOW)
+            screen.blit(
+                msg,
+                (width // 2 - msg.get_width() // 2,
+                 height // 2 - msg.get_height() // 2),
+            )
+            pygame.display.update()
+            pygame.time.wait(2000)
+
+        elif choice == "quit" or choice is None:
+            running = False
+
+    pygame.quit()
+    sys.exit()
+
 
 if __name__ == "__main__":
     main()
