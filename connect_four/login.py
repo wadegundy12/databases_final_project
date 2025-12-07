@@ -47,7 +47,7 @@ class InputBox:
 # ----------------------
 # Login Screen
 # ----------------------
-def show_login(screen):
+def show_login(screen, player_number):
     init_db()
 
     clock = pygame.time.Clock()
@@ -64,7 +64,7 @@ def show_login(screen):
     while running:
         screen.fill(BLACK)
 
-        title = FONT.render("Player 1 - Login", True, AMBER)
+        title = FONT.render(f"Player {player_number} - Login", True, AMBER)
         screen.blit(title, (90, 50))
 
         label_user = FONT.render("Username:", True, NEON_GREEN)
@@ -107,7 +107,7 @@ def show_login(screen):
                     password = password_box.text.strip()
 
                     if validate_login(username, password):
-                        return True
+                        return username
                     else:
                         message = "Invalid Login"
 
