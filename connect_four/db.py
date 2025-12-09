@@ -27,7 +27,9 @@ def init_db():
             username TEXT PRIMARY KEY,
             password BLOB NOT NULL,
             wins     INTEGER NOT NULL DEFAULT 0,
-            losses   INTEGER NOT NULL DEFAULT 0
+            losses   INTEGER NOT NULL DEFAULT 0,
+            connect4_wins   INTEGER NOT NULL DEFAULT 0,
+            connect4_losses INTEGER NOT NULL DEFAULT 0
         )
         """
     )
@@ -89,19 +91,34 @@ def validate_login(username: str, password: str) -> bool:
 
     return bcrypt.checkpw(pw_bytes, stored_hash)
 
-
-def record_result(winner_username: str, loser_username: str) -> None:
+def get_connect4_leaderboard():
     conn = get_connection()
     cur = conn.cursor()
 
-    cur.execute(
-        "UPDATE users SET wins = wins + 1 WHERE username = ?",
-        (winner_username,),
-    )
-    cur.execute(
-        "UPDATE users SET losses = losses + 1 WHERE username = ?",
-        (loser_username,),
-    )
+    cur.execute("""
+        SELECT username, connect4_wins, connect4_losses
+        FROM users
+        ORDER BY connect4_wins DESC
+    """)
+
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+
+def record_result(game, winner_username, loser_username):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    if game == "connect4":
+        cur.execute(
+            "UPDATE users SET connect4_wins = connect4_wins + 1 WHERE username = ?",
+            (winner_username,)
+        )
+        cur.execute(
+            "UPDATE users SET connect4_losses = connect4_losses + 1 WHERE username = ?",
+            (loser_username,)
+        )
 
     conn.commit()
     conn.close()

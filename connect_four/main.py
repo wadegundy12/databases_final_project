@@ -7,6 +7,8 @@ from ui import *
 from menu import show_menu
 from login import show_login
 from db import record_result
+from leaderboard_menu import show_leaderboard_game_menu
+from leaderboard_view import show_connect4_leaderboard
 
 def run_game(screen, player1, player2):
     board = create_board()
@@ -47,7 +49,7 @@ def run_game(screen, player1, player2):
                             winner = player2
                             loser = player1
 
-                        record_result(winner, loser)
+                        record_result("connect4",winner, loser)
 
 
                         show_winner(screen, piece, player1, player2)
@@ -59,7 +61,7 @@ def run_game(screen, player1, player2):
 
         if game_over:
             pygame.time.wait(3000)
-
+            return
 
 def main():
     pygame.init()
@@ -79,7 +81,6 @@ def main():
 
         if choice == "connect4":
             run_game(screen, player1, player2)
-
         elif choice == "tictactoe":
             screen.fill(BLACK)
             msg = FONT.render("Second game coming soon!", True, YELLOW)
@@ -90,7 +91,12 @@ def main():
             )
             pygame.display.update()
             pygame.time.wait(2000)
+        elif choice == "leaderboard":
+            game_choice = show_leaderboard_game_menu(screen)
 
+            if game_choice == "connect4":
+            
+                show_connect4_leaderboard(screen)
         elif choice == "quit" or choice is None:
             running = False
 

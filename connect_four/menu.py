@@ -48,8 +48,7 @@ def show_menu(screen, player1, player2):
                 elif leaderboard_button.collidepoint(event.pos):
                     return "leaderboard"
                 elif quit_button.collidepoint(event.pos):
-                    pygame.quit()
-                    sys.exit()
+                    return "quit"
 
         # ----- draw screen -----
         screen.fill(BLACK)
