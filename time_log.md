@@ -6,4 +6,6 @@
 | 11/13/2025| continued connect 4 design |    3      |
 | 11/20/2025| started login system       |    5      |
 | 12/06/2025| design/formatinglogin/music|    4      |
-| 12/07/2025| player2/database           |    5      |
+| 12/07/2025| player2/database/no music  |    5      |
+| 12/08/2025| leaderboard/finalized style|    4      |
+
