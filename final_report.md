@@ -2,7 +2,13 @@
 We designed a game hub with classic two-player games like connect four and tic-tac-toe. The program has both players sign in, and keeps track of wins and losses for each game. This allows players to check leaderboards for individual games and a global leaderboard that shows total wins/losses over every game.
 
 ## Demo Video
+# Login/gameplay
+
 https://github.com/user-attachments/assets/ba27f3cc-5f9a-4cde-9da6-ca3cd2e8bc83
+
+# Leaderboards
+
+https://github.com/user-attachments/assets/0b995535-9c85-4a33-8b41-40f17e3f32a0
 
 
 ## What we learned (key learnings)
