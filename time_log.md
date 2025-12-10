@@ -10,3 +10,5 @@
 | 12/08/2025| leaderboard/finalized style               |    4      |
 | 12/09/2005| tic-tac-toe/file organization/leaderboards|    4      |
 
+Total hours: 30
+
