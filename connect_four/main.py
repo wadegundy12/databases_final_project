@@ -6,62 +6,9 @@ from board import *
 from ui import *
 from menu import show_menu
 from login import show_login
-from db import record_result
+from connect4 import run_connect4
 from leaderboard_menu import show_leaderboard_game_menu
 from leaderboard_view import show_connect4_leaderboard
-
-def run_game(screen, player1, player2):
-    board = create_board()
-    game_over = False
-    turn = 0  
-    
-    draw_board(screen, board, player1, player2, turn)
-
-    while not game_over:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.MOUSEMOTION:
-                pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARESIZE))
-                posx = event.pos[0]
-                color = RED if turn == 0 else YELLOW
-                pygame.draw.circle(screen, color, (posx, int(SQUARESIZE / 2)), RADIUS)
-                pygame.display.update()
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARESIZE))
-                posx = event.pos[0]
-                col = int(posx / SQUARESIZE)
-
-                if is_valid_location(board, col):
-                    row = get_next_open_row(board, col)
-
-                    piece = 1 if turn == 0 else 2
-                    drop_piece(board, row, col, piece)
-
-                    if winning_move(board, piece):
-                        if piece == 1:
-                            winner = player1
-                            loser = player2
-                        else:
-                            winner = player2
-                            loser = player1
-
-                        record_result("connect4",winner, loser)
-
-
-                        show_winner(screen, piece, player1, player2)
-                        game_over = True
-                    else:
-                        turn = (turn + 1) % 2
-                        
-                    draw_board(screen, board, player1, player2, turn)
-
-        if game_over:
-            pygame.time.wait(3000)
-            return
 
 def main():
     pygame.init()
@@ -80,7 +27,7 @@ def main():
         choice = show_menu(screen, player1, player2)
 
         if choice == "connect4":
-            run_game(screen, player1, player2)
+            run_connect4(screen, player1, player2)
         elif choice == "tictactoe":
             screen.fill(BLACK)
             msg = FONT.render("Second game coming soon!", True, YELLOW)
