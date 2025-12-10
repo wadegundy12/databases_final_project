@@ -1,16 +1,27 @@
 import pygame
 from games.connect_four.constants import BLUE, BLACK, RED, YELLOW, RADIUS, ROWS, COLS, SQUARESIZE, FONT
 
+
 def draw_board(screen, board, player1_name=None, player2_name=None, turn=None):
     for c in range(COLS):
         for r in range(ROWS):
-            pygame.draw.rect(screen, BLUE, (c*SQUARESIZE, (r+1)*SQUARESIZE, SQUARESIZE, SQUARESIZE))
-            pygame.draw.circle(screen, BLACK, (int(c*SQUARESIZE + SQUARESIZE/2), int((r+1)*SQUARESIZE + SQUARESIZE/2)), RADIUS)
+            pygame.draw.rect(screen, BLUE, (c * SQUARESIZE, (r + 1) * SQUARESIZE, SQUARESIZE, SQUARESIZE))
+            pygame.draw.circle(
+                screen,
+                BLACK,
+                (int(c * SQUARESIZE + SQUARESIZE / 2), int((r + 1) * SQUARESIZE + SQUARESIZE / 2)),
+                RADIUS,
+            )
 
     for c in range(COLS):
         for r in range(ROWS):
             color = RED if board[r][c] == 1 else YELLOW if board[r][c] == 2 else BLACK
-            pygame.draw.circle(screen, color, (int(c*SQUARESIZE + SQUARESIZE/2), int((r+1)*SQUARESIZE + SQUARESIZE/2)), RADIUS)
+            pygame.draw.circle(
+                screen,
+                color,
+                (int(c * SQUARESIZE + SQUARESIZE / 2), int((r + 1) * SQUARESIZE + SQUARESIZE / 2)),
+                RADIUS,
+            )
 
     if player1_name is not None and player2_name is not None:
         header_rect = pygame.Rect(0, 0, COLS * SQUARESIZE, SQUARESIZE)
@@ -27,6 +38,7 @@ def draw_board(screen, board, player1_name=None, player2_name=None, turn=None):
 
     pygame.display.update()
 
+
 def show_winner(screen, piece, player1_name=None, player2_name=None):
     color = RED if piece == 1 else YELLOW
 
@@ -38,7 +50,7 @@ def show_winner(screen, piece, player1_name=None, player2_name=None):
         text = f"Player {piece} wins!"
 
     label = FONT.render(text, True, color)
-    
+
     header_rect = pygame.Rect(0, 0, COLS * SQUARESIZE, SQUARESIZE)
     pygame.draw.rect(screen, BLACK, header_rect)
 

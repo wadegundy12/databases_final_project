@@ -2,7 +2,7 @@ import sys
 import pygame
 from games.connect_four.constants import *
 from games.connect_four.board import *
-from ui import *
+from games.connect_four.ui import *
 from db import record_result
 
 def run_connect4(screen, player1, player2):

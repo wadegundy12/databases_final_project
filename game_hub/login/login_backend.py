@@ -1,4 +1,3 @@
-# login.py
 import pygame
 import sys
 
@@ -6,9 +5,6 @@ from login.login_format import *
 from db import init_db, validate_login, user_exists, create_new_user
 
 
-# ----------------------
-# Text Input Class
-# ----------------------
 class InputBox:
     def __init__(self, x, y, w, h, is_password=False):
         self.rect = pygame.Rect(x, y, w, h)
@@ -33,7 +29,6 @@ class InputBox:
         txt_surface = FONT.render(display, True, NEON_GREEN)
         screen.blit(txt_surface, (self.rect.x + 10, self.rect.y + 10))
 
-        # blinking cursor
         time = pygame.time.get_ticks()
         if self.active and (time // 500) % 2 == 0:  
             cursor_x = self.rect.x + 10 + txt_surface.get_width() + 5
@@ -44,9 +39,6 @@ class InputBox:
         pygame.draw.rect(screen, DARK_GREEN, self.rect, 2)
 
 
-# ----------------------
-# Login Screen
-# ----------------------
 def show_login(screen, player_number):
     init_db()
 
@@ -76,7 +68,6 @@ def show_login(screen, player_number):
         username_box.draw(screen)
         password_box.draw(screen)
 
-        # Buttons
         pygame.draw.rect(screen, DARK_GRAY, login_button)
         pygame.draw.rect(screen, DARK_GRAY, join_button)
 
@@ -86,7 +77,6 @@ def show_login(screen, player_number):
         join_label = FONT.render("Join", True, NEON_GREEN)
         screen.blit(join_label, (join_button.centerx - 75, join_button.centery - 30))
 
-        # Message text
         if message:
             msg_surface = FONT_ERROR_MSG.render(message, True, ERROR_RED)
             screen.blit(msg_surface, (150, 550))

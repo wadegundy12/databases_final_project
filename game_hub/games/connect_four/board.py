@@ -1,4 +1,3 @@
-# board.py
 import numpy as np
 from games.connect_four.constants import ROWS, COLS
 

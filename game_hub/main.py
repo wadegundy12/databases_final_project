@@ -1,12 +1,12 @@
-# main.py
 import sys
 import pygame
 from games.connect_four.constants import size, width, height, BLACK, YELLOW, FONT
 from menu import show_menu
 from login.login_backend import show_login
 from games.connect_four.connect4 import run_connect4
+from games.tic_tac_toe.tictactoe import run_tictactoe
 from leader_board.leaderboard_menu import show_leaderboard_game_menu
-from leader_board.leaderboard_view import show_connect4_leaderboard
+from leader_board.leaderboard_view import show_connect4_leaderboard, show_global_leaderboard, show_tictactoe_leaderboard
 
 def main():
     pygame.init()
@@ -27,21 +27,16 @@ def main():
         if choice == "connect4":
             run_connect4(screen, player1, player2)
         elif choice == "tictactoe":
-            screen.fill(BLACK)
-            msg = FONT.render("Second game coming soon!", True, YELLOW)
-            screen.blit(
-                msg,
-                (width // 2 - msg.get_width() // 2,
-                 height // 2 - msg.get_height() // 2),
-            )
-            pygame.display.update()
-            pygame.time.wait(2000)
+            run_tictactoe(screen, player1, player2)
         elif choice == "leaderboard":
             game_choice = show_leaderboard_game_menu(screen)
 
             if game_choice == "connect4":
-            
                 show_connect4_leaderboard(screen)
+            elif game_choice == "global":
+                show_global_leaderboard(screen)
+            elif game_choice == "tictactoe":
+                show_tictactoe_leaderboard(screen)
         elif choice == "quit" or choice is None:
             running = False
 

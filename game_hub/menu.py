@@ -1,7 +1,6 @@
-# menu.py
 import pygame
 import sys
-from games.connect_four.constants import BLACK, BLUE, RED, YELLOW, FONT, size
+from games.connect_four.constants import BLACK, BLUE, RED, YELLOW, FONT, SMALL_FONT, size
 from login.login_format import NEON_GREEN, DARK_GREEN, LIGHT_GREEN, DARK_GRAY, AMBER
 
 WIDTH, HEIGHT = size
@@ -9,7 +8,7 @@ WIDTH, HEIGHT = size
 def draw_button(screen, text, rect,
                 idle_color, hover_color,
                 idle_text_color, hover_text_color,
-                mouse_pos):
+                mouse_pos, font=FONT):
     if rect.collidepoint(mouse_pos):
         bg_color = hover_color
         text_color = hover_text_color
@@ -19,7 +18,7 @@ def draw_button(screen, text, rect,
 
     pygame.draw.rect(screen, bg_color, rect, border_radius=10)
 
-    label = FONT.render(text, True, text_color)
+    label = font.render(text, True, text_color)
     label_rect = label.get_rect(center=rect.center)
     screen.blit(label, label_rect)
 
@@ -27,7 +26,6 @@ def draw_button(screen, text, rect,
 def show_menu(screen, player1, player2):
     clock = pygame.time.Clock()
 
-    # Buttons (centered horizontally)
     connect4_button = pygame.Rect(WIDTH // 2 - 150, 220, 300, 60)
     ttt_button      = pygame.Rect(WIDTH // 2 - 150, 320, 300, 60) 
     leaderboard_button = pygame.Rect(WIDTH // 2 - 150, 420, 300, 60) 
@@ -50,17 +48,14 @@ def show_menu(screen, player1, player2):
                 elif quit_button.collidepoint(event.pos):
                     return "quit"
 
-        # ----- draw screen -----
         screen.fill(BLACK)
 
-        # Title
         title = FONT.render("Choose a Game", True, AMBER)
         screen.blit(title, (WIDTH // 2 - title.get_width() // 2, 80))
 
         subtitle = FONT.render(f"{player1} vs {player2}", True, LIGHT_GREEN)
         screen.blit(subtitle, (WIDTH // 2 - subtitle.get_width() // 2, 140))
 
-        # Buttons
         draw_button(
             screen, "Connect4", connect4_button,
             DARK_GRAY, NEON_GREEN,    
@@ -69,10 +64,11 @@ def show_menu(screen, player1, player2):
         )
 
         draw_button(
-            screen, "Game TBA", ttt_button,
+            screen, "TicTacToe", ttt_button,
             DARK_GRAY, NEON_GREEN,
             NEON_GREEN, BLACK,
-            mouse_pos
+            mouse_pos,
+            font=SMALL_FONT
         )
 
         draw_button(
